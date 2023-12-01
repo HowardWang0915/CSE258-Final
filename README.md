@@ -1,5 +1,10 @@
 # CSE258 Assignment2
 [Link](https://cseweb.ucsd.edu/classes/fa23/cse258-a/slides/assignment2_fa23.pdf) to assignment slides.
+## Setup
+To download the beer data, run
+```bash
+sh setup.sh
+```
 
 # TODOs
 - [ ] Identify Dataset to study and describe its basic properties
