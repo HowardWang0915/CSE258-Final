@@ -7,7 +7,7 @@ sh setup.sh
 ```
 To setup your python environment, run
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 To load the data into a pickle file, run
@@ -23,10 +23,6 @@ python EDA.py
 ```
 
 To run review text analysis, run:
-```
-pip install -r requirements.txt
-```
-then:
 ```bash
 python review_text_analysis.py
 ```
