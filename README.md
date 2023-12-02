@@ -5,6 +5,22 @@ To download the beer data, run
 ```bash
 sh setup.sh
 ```
+To setup your python environment, run
+```bash
+pip install requirements.txt
+```
+
+To load the data into a pickle file, run
+```bash
+python helpers/load.py -c NUM
+```
+where `NUM` is the number of data you intended to load. Because this is a large dataset, choose the number wisely otherwise your computer might crash like mine :(.
+
+## Run
+To run Exploratory data analysis, run
+```bash
+python EDA.py
+```
 
 # TODOs
 - [ ] Identify Dataset to study and describe its basic properties
