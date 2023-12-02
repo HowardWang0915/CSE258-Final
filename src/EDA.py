@@ -1,16 +1,34 @@
 import statistics
+import numpy as np
 from helpers.load import loadFromPickle
-from helpers.cleanData import cleanData
+import matplotlib.pyplot as plt
 
 data = loadFromPickle('data/data.pkl')
 
 beers = set()
 reviewers = set()
 
-data = cleanData(data)
 for d in data:
     beers.add(d['beer/beerId'])
     reviewers.add(d['review/profileName'])
+
+# generate histogram of all review scores
+plt.figure(1)
+plt.hist(np.array([d['review/appearance'] for d in data]),bins=20)
+plt.savefig('./assets/hist_appear.jpg')
+plt.figure(2)
+plt.hist(np.array([d['review/aroma'] for d in data]),bins=20)
+plt.savefig('./assets/hist_aroma.jpg')
+plt.figure(3)
+plt.hist(np.array([d['review/palate'] for d in data]),bins=20)
+plt.savefig('./assets/hist_palate.jpg')
+plt.figure(4)
+plt.hist(np.array([d['review/taste'] for d in data]),bins=20)
+plt.savefig('./assets/hist_taste.jpg')
+plt.figure(5)
+plt.hist(np.array([d['review/overall'] for d in data]),bins=20)
+plt.savefig('./assets/hist_overall.jpg')
+
 # print(data[:3])
 print("Number of unique beer IDs: ", len(beers))
 print("Number of unique reviewers: ", len(reviewers))
