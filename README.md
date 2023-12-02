@@ -22,6 +22,11 @@ To run Exploratory data analysis, run
 python EDA.py
 ```
 
+To run review text analysis, run:
+```
+pip install -r requirements.txt
+```
+then:
 ```bash
 python review_text_analysis.py
 ```
