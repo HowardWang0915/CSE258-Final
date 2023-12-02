@@ -2,7 +2,7 @@ import statistics
 from helpers.load import loadFromPickle
 from helpers.cleanData import cleanData
 
-data = loadFromPickle()
+data = loadFromPickle('data/data.pkl')
 
 beers = set()
 reviewers = set()
