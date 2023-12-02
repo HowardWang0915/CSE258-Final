@@ -21,12 +21,12 @@ where `NUM` is the number of data you intended to load. Because this is a large 
 ## Run
 To run Exploratory data analysis, run
 ```bash
-python EDA.py
+python src/EDA.py
 ```
 
 To run review text analysis, run:
 ```bash
-python review_text_analysis.py
+python src/review_text_analysis.py
 ```
 
 # TODOs
