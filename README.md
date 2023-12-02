@@ -14,9 +14,9 @@ pip install -r requirements.txt
 
 To load the data into a pickle file, run
 ```bash
-python helpers/load.py -c NUM
+python src/helpers/load.py -c NUM -p PATH
 ```
-where `NUM` is the number of data you intended to load. Because this is a large dataset, choose the number wisely otherwise your computer might crash like mine :(.
+where `NUM` is the number of data you intended to load, and `PATH` is the path where the `json.gz` file is located. Put your data in your `data/` folder so that it will be commited to github.
 
 ## Run
 To run Exploratory data analysis, run
