@@ -12,7 +12,7 @@ from transformers import AutoModel, AutoTokenizer
 MODEL_NAME = 'bert-base-uncased'
 
 
-def parse(path):
+def parse(path='data/ratebeer.json.gz'):
     dataset = []
     g = gzip.open(path, 'r')
     i = 0
@@ -39,7 +39,7 @@ def get_rating(rating_text):
     return float(score) / float(total)
 
 def train(tokenizer, model):
-    dataset = parse('ratebeer.json.gz')
+    dataset = parse()
 
     # dataTrain: 9000
     # dataTest: 1000
