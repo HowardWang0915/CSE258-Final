@@ -22,6 +22,10 @@ To run Exploratory data analysis, run
 python EDA.py
 ```
 
+```bash
+python review_text_analysis.py
+```
+
 # TODOs
 - [ ] Identify Dataset to study and describe its basic properties
 - [ ] Identify a predictive task on this dataset and describe the features that will be relevant to it
