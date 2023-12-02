@@ -10,6 +10,8 @@ To setup your python environment, run
 pip install -r requirements.txt
 ```
 
+> :warning: It is recommended to install your own PyTorch from this [link](https://pytorch.org/get-started/locally/)
+
 To load the data into a pickle file, run
 ```bash
 python helpers/load.py -c NUM
