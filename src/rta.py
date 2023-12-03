@@ -2,8 +2,12 @@ import os
 import gzip
 import json
 import torch
+import argparse
 import numpy as np
 
+from tqdm import tqdm
+from helpers.load import loadFromPickle
+from helpers.cleanData import cleanData
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from transformers import AutoModel, AutoTokenizer
@@ -11,21 +15,16 @@ from transformers import AutoModel, AutoTokenizer
 
 MODEL_NAME = 'bert-base-uncased'
 
+if torch.backends.mps.is_available():
+    device = torch.device('mps')
+    print('Using MPS as torch device.')
+else:
+    device = torch.device('cpu')
+    print('MPS is not available.')
 
-def parse(path='data/ratebeer.json.gz'):
-    dataset = []
-    g = gzip.open(path, 'r')
-    i = 0
-    for l in g:
-        dataset.append(eval(l))
-        i += 1
-        if i >= 10000:
-            break
-
-    return dataset
 
 def get_embeddings(text, tokenizer, model):
-    tokens = tokenizer(text, return_tensors='pt')
+    tokens = tokenizer(text, return_tensors='pt').to(device)
     
     with torch.no_grad():
         output = model(**tokens)
@@ -33,13 +32,9 @@ def get_embeddings(text, tokenizer, model):
     embeddings = output.last_hidden_state.mean(dim=1)
     return embeddings
 
-def get_rating(rating_text):
-    score, total = rating_text.split('/')
-    
-    return float(score) / float(total)
-
-def train(tokenizer, model):
-    dataset = parse()
+def train(tokenizer, model, data_path):
+    # dataset = parse()
+    dataset = loadFromPickle(data_path)
 
     # dataTrain: 9000
     # dataTest: 1000
@@ -53,35 +48,34 @@ def train(tokenizer, model):
     # Process train data
     # The training data will be the embedding of the review text
     # x -> [embedding(d['review/text'])]
-    for i, d in enumerate(dataTrain):
-        if i % 100 == 0:
-            print(f'Processing train data @{i}...')
-        
+    for i, d in enumerate(tqdm(dataTrain)):
         # y
-        rating = get_rating(d['review/overall'])
-
+        rating = d['review/overall']
         # x
         review = d['review/text']
         try:
             embeddings = get_embeddings(review, tokenizer, model)[0]
+
+            if device != torch.device('cpu'):
+                embeddings = embeddings.cpu().detach().numpy()
         except:
-            print('Reivew text length exceeded at:', len(review))
+            # print('Reivew text length exceeded at:', len(review))
             continue
 
         x_train.append(embeddings)
         y_train.append(rating)
 
     # Process test data
-    for i, d in enumerate(dataTest):
-        if i % 100 == 0:
-            print(f'Processing train data @{i}...')
-            
-        rating = get_rating(d['review/overall'])
+    for i, d in enumerate(tqdm(dataTest)):
+        rating = d['review/overall']
         review = d['review/text']
         try:
             embeddings = get_embeddings(review, tokenizer, model)[0]
+            
+            if device != torch.device('cpu'):
+                embeddings = embeddings.cpu().detach().numpy()
         except:
-            print('Reivew text length exceeded at:', len(review))
+            # print('Reivew text length exceeded at:', len(review))
             continue
         
         x_test.append(embeddings)
@@ -102,7 +96,11 @@ def train(tokenizer, model):
 if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModel.from_pretrained(MODEL_NAME)
+    model.to(device)
 
-    train(tokenizer, model)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--path', help='Data path', required=True)
+    args = parser.parse_args()
 
+    train(tokenizer, model, args.path)
 
