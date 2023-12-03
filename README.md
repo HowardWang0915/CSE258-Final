@@ -24,9 +24,9 @@ To run Exploratory data analysis, run
 python src/EDA.py
 ```
 
-To run review text analysis, run:
+To run review/overall predictive task, run:
 ```bash
-python src/review_text_analysis.py
+python src/predictive.py --path <data_path>
 ```
 
 # TODOs
