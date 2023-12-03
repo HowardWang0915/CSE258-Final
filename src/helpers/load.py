@@ -22,7 +22,7 @@ def loadAndSave(count, path):
     """
     data = []
     with gzip.open(path, mode='rt') as f:
-        for line in tqdm(f):
+        for line in tqdm(f, total=count):
             if(len(data) == count): break
             d = eval(line)
             if('beer/ABV' in d and d['beer/ABV'] != '-'): data.append(cleanData(d)) 
