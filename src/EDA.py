@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import pandas as pd
 import seaborn as sns
+import scipy
 
 data = loadFromPickle('data/data.pkl')
 
@@ -60,6 +61,12 @@ plt.savefig('./assets/hist_taste.jpg')
 plt.figure(5)
 plt.hist(np.array(overall),bins=20)
 plt.savefig('./assets/hist_overall.jpg')
+plt.figure(6)
+plt.hist(np.array(popularity),bins=20)
+plt.savefig('./assets/hist_popularity.jpg')
+plt.figure(7)
+plt.hist(np.array(activity),bins=20)
+plt.savefig('./assets/hist_activity.jpg')
 
 # print(data[:3])
 print("Number of unique beer IDs: ", len(beers))
@@ -135,7 +142,8 @@ for i in range(10):
 # print(statistics.stdev(pop))
 # print(max(pop))
 # print(min(pop))
-d = {'appear': appear, 'aroma': aroma, 'palate': palate, 'taste': taste, 'overall': overall, 'popularity': [math.log(i, 10) for i in popularity]}
+print("Plotting feature relation pairplot")
+d = {'appear': appear, 'aroma': aroma, 'palate': palate, 'taste': taste, 'overall': overall, 'popularity': [math.log(i, 20) for i in popularity], 'activity': [math.log(i, 20) for i in activity]}
 df = pd.DataFrame(d)
 fig = sns.PairGrid(df)
 def pairgrid_heatmap(x, y, **kws):
@@ -145,3 +153,9 @@ fig.map_diag(plt.hist)
 fig.map_offdiag(pairgrid_heatmap)
 
 plt.savefig("assets/pairplog.jpg")
+
+print(" ")
+print("Pearson similarity coefficient between overall and activity is", scipy.stats.pearsonr(df['overall'], df['activity'])[0])
+print("Pearson similarity coefficient between overall and popularity is", scipy.stats.pearsonr(df['overall'], df['popularity'])[0])
+print("Pearson similarity coefficient between activity and popularity is", scipy.stats.pearsonr(df['activity'], df['popularity'])[0])
+print("Pearson similarity coefficient between overall and taste is", scipy.stats.pearsonr(df['overall'], df['taste'])[0])
