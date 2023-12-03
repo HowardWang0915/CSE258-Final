@@ -33,6 +33,12 @@ def get_embeddings(text, tokenizer, model):
     embeddings = output.last_hidden_state.mean(dim=1)
     return embeddings
 
+def save_tensor(data, filename):
+    # data = torch.tensor(data)
+    # torch.save(data, filename)
+    np.save(filename, data)
+    print(f'{filename} saved.')
+
 def train(tokenizer, model, data_path):
     # dataset = parse()
     dataset = loadFromPickle(data_path)
@@ -74,6 +80,11 @@ def train(tokenizer, model, data_path):
         y_test.extend(ratings)
 
     x_train, y_train, x_test, y_test = np.array(x_train), np.array(y_train), np.array(x_test), np.array(y_test)
+
+    print('Start saving embeddings...')
+    # Save tensor
+    save_tensor(x_train, 'embeddings/train.npy')
+    save_tensor(x_test, 'embeddings/test.npy')
 
     print('Finished processing data, start training regressor...')
 
