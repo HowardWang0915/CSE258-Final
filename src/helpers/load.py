@@ -1,6 +1,7 @@
 import argparse
 import gzip
 import pickle
+import numpy as np
 from tqdm import tqdm
 from fractions import Fraction
 from collections import defaultdict
@@ -58,7 +59,9 @@ def loadFromPickle(path):
     with open(path, mode='rb') as f:
         data = pickle.load(f)
     return data
-    
+
+def load_embeddings(path):
+    return np.load(path)
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
