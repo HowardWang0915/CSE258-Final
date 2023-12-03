@@ -36,7 +36,6 @@ def cleanData(d):
     d['beer/brewerId'] = brewerID[d['beer/brewerId']]
     d['beer/beerId'] = beerID[d['beer/beerId']]
     d['beer/style'] = style[d['beer/style']]
-
     return d
 
 def loadAndSave(count, path):
