@@ -41,7 +41,7 @@ python src/review_text_analysis.py
 # Predictive Tasks
 # Model
 
-# Relavent leterature
+# Relavent literature
 [1] Li, Yang, et al. "Recent Developments in Recommender Systems: A Survey." arXiv preprint arXiv:2306.12680 (2023). [link](https://arxiv.org/pdf/2306.12680.pdf)
 
 [2] Wu, Likang, et al. "A Survey on Large Language Models for Recommendation." arXiv preprint arXiv:2305.19860 (2023). [link](https://arxiv.org/pdf/2305.19860.pdf)
