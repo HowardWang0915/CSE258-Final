@@ -14,6 +14,7 @@ from transformers import AutoModel, AutoTokenizer
 
 
 MODEL_NAME = 'bert-base-uncased'
+BATCH_SIZE = 64
 
 if torch.backends.mps.is_available():
     device = torch.device('mps')
@@ -24,7 +25,7 @@ else:
 
 
 def get_embeddings(text, tokenizer, model):
-    tokens = tokenizer(text, return_tensors='pt').to(device)
+    tokens = tokenizer(text, return_tensors='pt', padding=True, truncation=True).to(device)
     
     with torch.no_grad():
         output = model(**tokens)
@@ -48,38 +49,29 @@ def train(tokenizer, model, data_path):
     # Process train data
     # The training data will be the embedding of the review text
     # x -> [embedding(d['review/text'])]
-    for i, d in enumerate(tqdm(dataTrain)):
-        # y
-        rating = d['review/overall']
-        # x
-        review = d['review/text']
-        try:
-            embeddings = get_embeddings(review, tokenizer, model)[0]
+    for i in tqdm(range(0, len(dataTrain), BATCH_SIZE)):
+        reviews = [d['review/text'] for d in dataTrain[i:i+BATCH_SIZE]]
+        ratings = [d['review/overall'] for d in dataTrain[i:i+BATCH_SIZE]]
+        embeddings = get_embeddings(reviews, tokenizer, model)
 
-            if device != torch.device('cpu'):
-                embeddings = embeddings.cpu().detach().numpy()
-        except:
-            # print('Reivew text length exceeded at:', len(review))
-            continue
+        if device != torch.device('cpu'):
+            x_train.extend(embeddings.cpu().detach().numpy().tolist())
+        else:
+            x_train.extend(embeddings.tolist())
 
-        x_train.append(embeddings)
-        y_train.append(rating)
+        y_train.extend(ratings)
+    
+    for i in tqdm(range(0, len(dataTest), BATCH_SIZE)):
+        reviews = [d['review/text'] for d in dataTest[i:i+BATCH_SIZE]]
+        ratings = [d['review/overall'] for d in dataTest[i:i+BATCH_SIZE]]
+        embeddings = get_embeddings(reviews, tokenizer, model)
 
-    # Process test data
-    for i, d in enumerate(tqdm(dataTest)):
-        rating = d['review/overall']
-        review = d['review/text']
-        try:
-            embeddings = get_embeddings(review, tokenizer, model)[0]
-            
-            if device != torch.device('cpu'):
-                embeddings = embeddings.cpu().detach().numpy()
-        except:
-            # print('Reivew text length exceeded at:', len(review))
-            continue
-        
-        x_test.append(embeddings)
-        y_test.append(rating)
+        if device != torch.device('cpu'):
+            x_test.extend(embeddings.cpu().detach().numpy().tolist())
+        else:
+            x_test.extend(embeddings.tolist())
+
+        y_test.extend(ratings)
 
     x_train, y_train, x_test, y_test = np.array(x_train), np.array(y_train), np.array(x_test), np.array(y_test)
 
