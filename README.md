@@ -40,11 +40,11 @@ python src/predictive.py --path <data_path>
 - [ ] Insight report
 
 ### Regressor
-- [x] Best feature (review/taste)
-- [x] 4 Ratings (review/taste, review/aroma, review/apperence, review/palate)
-- [x] 4 Ratings + BERT embeddings
-- [ ] 4 Ratings + BoW embeddings
-- [x] BERT embeddings only
+- [x] ~Best feature (review/taste)~
+- [x] ~5 Ratings (review/taste, review/aroma, review/apperence, review/palate, length of review/text)~
+- [x] ~5 Ratings + BERT embeddings~
+- [ ] 5 Ratings + BoW embeddings
+- [x] ~BERT embeddings only~
 - [ ] BoW embeddings only
 
 ### Literature
