@@ -1,3 +1,4 @@
+import os
 import argparse
 import gzip
 import pickle
@@ -60,8 +61,11 @@ def loadFromPickle(path):
         data = pickle.load(f)
     return data
 
-def load_embeddings(path):
-    return np.load(path)
+def load_embeddings(path, train=True):
+    if train:
+        return np.load(os.path.join(path, 'train.npy'))
+    else:
+        return np.load(os.path.join(path, 'test.npy'))
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
