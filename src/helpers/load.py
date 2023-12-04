@@ -34,9 +34,9 @@ def cleanData(d):
             style[d['beer/style']] = 0
         else:
             style[d['beer/style']] = max(style.values()) + 1
-    d['beer/brewerId'] = brewerID[d['beer/brewerId']]
-    d['beer/beerId'] = beerID[d['beer/beerId']]
-    d['beer/style'] = style[d['beer/style']]
+    # d['beer/brewerId'] = brewerID[d['beer/brewerId']]
+    # d['beer/beerId'] = beerID[d['beer/beerId']]
+    # d['beer/style'] = style[d['beer/style']]
     return d
 
 def loadAndSave(count, path):
@@ -49,9 +49,9 @@ def loadAndSave(count, path):
             if(len(data) == count): break
             d = eval(line)
             if('beer/ABV' in d and d['beer/ABV'] != '-'): data.append(cleanData(d))
-    print(max(style.values()))
-    print(max(beerID.values()))
-    print(max(brewerID.values()))
+    # print(max(style.values()))
+    # print(max(beerID.values()))
+    # print(max(brewerID.values()))
     with open("data/data.pkl", mode='wb') as f:
         pickle.dump(data, f)
 
