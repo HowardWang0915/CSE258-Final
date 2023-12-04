@@ -48,6 +48,9 @@ def loadAndSave(count, path):
             if(len(data) == count): break
             d = eval(line)
             if('beer/ABV' in d and d['beer/ABV'] != '-'): data.append(cleanData(d))
+    print(max(style.values()))
+    print(max(beerID.values()))
+    print(max(brewerID.values()))
     with open("data/data.pkl", mode='wb') as f:
         pickle.dump(data, f)
 
