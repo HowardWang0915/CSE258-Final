@@ -41,7 +41,7 @@ python src/predictive.py --path <data_path>
 
 ### Regressor
 - [ ] Best feature (review/taste)
-- [ ] 4 Ratings (review/taste, review/aroma, review/apperence, review/)
+- [ ] 4 Ratings (review/taste, review/aroma, review/apperence, review/palate)
 - [ ] 4 Ratings + BERT embeddings
 - [ ] 4 Ratings + BoW embeddings
 - [ ] BERT embeddings only
