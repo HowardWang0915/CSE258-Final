@@ -17,12 +17,14 @@ taste = []
 overall = []
 popularity = [] # wine popularity
 activity = [] # user activity
+abv = []
 beers = defaultdict(int)
 beerNames = defaultdict()
 reviewers = defaultdict(int)
 brewers = defaultdict(int)
 reviewerRatings = defaultdict(int)
 beerRatings = defaultdict(int)
+beerStyles = defaultdict(int)
 
 for d in data:
     if d['beer/beerId'] in beerNames.keys():
@@ -34,11 +36,13 @@ for d in data:
     brewers[d['beer/brewerId']] += 1
     reviewerRatings[d['review/profileName']] += d['review/overall']
     beerRatings[d['beer/beerId']] += d['review/overall']
+    beerStyles[d['beer/style']] += 1
     appear.append(d['review/appearance'])
     aroma.append(d['review/aroma'])
     palate.append(d['review/palate'])
     taste.append(d['review/taste'])
     overall.append(d['review/overall'])
+    abv.append(d['beer/ABV'])
 # calculate popularity 
 maxPopularity = max(beers.values())
 maxActivities = max(reviewers.values())
@@ -67,11 +71,24 @@ plt.savefig('./assets/hist_popularity.jpg')
 plt.figure(7)
 plt.hist(np.array(activity),bins=20)
 plt.savefig('./assets/hist_activity.jpg')
+plt.figure(8)
+plt.hist(np.array(abv), bins=20)
+plt.savefig('./assets/hist_abv.jpg')
 
 # print(data[:3])
 print("Number of unique beer IDs: ", len(beers))
 print("Number of unique reviewers: ", len(reviewers))
 print("Number of unique brewers: ", len(brewers))
+print("Number of unique beer styles", len(beerStyles))
+print("")
+
+print("ABV: ")
+print(" Average: ", statistics.fmean(abv))
+print(" Min: ", min(abv))
+print(" Max: ", max(abv))
+print(" Median: ", statistics.median(abv))
+print(" Standard Deviation: ", statistics.stdev(abv))
+
 print("Appearance: ")
 print(" Average: ", statistics.fmean(appear))
 print(" Min: ", min(appear))
@@ -109,6 +126,7 @@ print(" Standard Deviation: ", statistics.stdev(overall))
 
 topReviewers = sorted(reviewers.items(), key=lambda x:x[1], reverse=True)[:10]
 topReviewedBeers = sorted(beers.items(), key=lambda x:x[1], reverse=True)[:10]
+topReviewedStyles = sorted(beerStyles.items(), key=lambda x:x[1], reverse=True)
 print("List of top 10 reviewers with average rating and stdev: ")
 for i in range(10):
     arr = [d['review/overall'] for d in data if d['review/profileName'] == topReviewers[i][0]]
@@ -118,6 +136,11 @@ print("List of top 10 most reviewed Beers with average rating and stdev: ")
 for i in range(10):
     arr = [d['review/overall'] for d in data if d['beer/beerId'] == topReviewedBeers[i][0]]
     print(" " + beerNames[topReviewedBeers[i][0]] + ":", + topReviewedBeers[i][1], ",", sum(arr) / len(arr), ",", statistics.stdev(arr))
+print("")
+print("List of top reviewed styles beers with average rating and stdev: ")
+for i in range(10):
+    arr = [d['review/overall'] for d in data if d['beer/style'] == topReviewedStyles[i][0]]
+    print(" " + topReviewedStyles[i][0] + ":", + topReviewedStyles[i][1], ",", sum(arr) / len(arr), ",", statistics.stdev(arr))
 # print("")
 # print("List of top 20 beers with highest ratings: ")
 # topRatedBeers = sorted({n: beerRatings[n] / beers[n] for n in beers.keys()}.items(), key=lambda x:x[1], reverse=True)
@@ -143,19 +166,28 @@ for i in range(10):
 # print(max(pop))
 # print(min(pop))
 print("Plotting feature relation pairplot")
-d = {'appear': appear, 'aroma': aroma, 'palate': palate, 'taste': taste, 'overall': overall, 'popularity': [math.log(i, 20) for i in popularity], 'activity': [math.log(i, 20) for i in activity]}
-df = pd.DataFrame(d)
-fig = sns.PairGrid(df)
+d1 = {'abv': abv, 'appear': appear, 'aroma': aroma, 'palate': palate, 'taste': taste, 'overall': overall}
+d2 = {'popularity': [math.log(i, 20) for i in popularity], 'activity': [math.log(i, 20) for i in activity], 'overall': overall}
+df1 = pd.DataFrame(d1)
+fig = sns.PairGrid(df1)
 def pairgrid_heatmap(x, y, **kws):
     cmap = sns.light_palette(kws.pop("color"), as_cmap=True)
     plt.hist2d(x, y, cmap=cmap, cmin=1, **kws)
 fig.map_diag(plt.hist)
 fig.map_offdiag(pairgrid_heatmap)
 
-plt.savefig("assets/pairplog.jpg")
+plt.savefig("assets/pairplot1.jpg")
+plt.close()
+df2 = pd.DataFrame(d2)
+fig = sns.PairGrid(df2)
+fig.map_diag(plt.hist)
+fig.map_offdiag(pairgrid_heatmap)
+plt.savefig("assets/pairplot2.jpg")
 
 print(" ")
-print("Pearson similarity coefficient between overall and activity is", scipy.stats.pearsonr(df['overall'], df['activity'])[0])
-print("Pearson similarity coefficient between overall and popularity is", scipy.stats.pearsonr(df['overall'], df['popularity'])[0])
-print("Pearson similarity coefficient between activity and popularity is", scipy.stats.pearsonr(df['activity'], df['popularity'])[0])
-print("Pearson similarity coefficient between overall and taste is", scipy.stats.pearsonr(df['overall'], df['taste'])[0])
+print("Pearson similarity coefficient between overall and activity is", scipy.stats.pearsonr(df2['overall'], df2['activity'])[0])
+print("Pearson similarity coefficient between overall and popularity is", scipy.stats.pearsonr(df2['overall'], df2['popularity'])[0])
+print("Pearson similarity coefficient between activity and popularity is", scipy.stats.pearsonr(df2['activity'], df2['popularity'])[0])
+print("Pearson similarity coefficient between overall and taste is", scipy.stats.pearsonr(df1['overall'], df1['taste'])[0])
+print("Pearson similarity coefficient between overall and aroma is", scipy.stats.pearsonr(df1['overall'], df1['aroma'])[0])
+print("Pearson similarity coefficient between overall and appearance is", scipy.stats.pearsonr(df1['overall'], df1['appear'])[0])
