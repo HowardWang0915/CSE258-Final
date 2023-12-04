@@ -1,4 +1,9 @@
+# Large files
 data/
+*.zip
+*.gz
+
+# pycache
 __pycache__/
 
 # ipynb checkpoint
@@ -6,3 +11,7 @@ __pycache__/
 
 # numpy
 *.npy
+
+# ipynb
+*.ipynb
+
