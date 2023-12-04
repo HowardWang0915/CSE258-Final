@@ -33,7 +33,7 @@ python src/bert_embeds.py --path <data_path>
 
 To run predictive task:
 ```bash
-python src/predictive.py --data-path <data_path> --embed_path <embed_path> --embed_mode <bert|w2v>
+python src/predictive.py --data-path <data_path> --embed-path <embed_path> --embed-mode <bert|w2v>
 ```
 
 # TODOs
