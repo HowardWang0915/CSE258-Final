@@ -31,7 +31,7 @@ python src/bert_embeds.py --path <data_path>
 
 To run predictive task:
 ```bash
-python src/predictive.py --data-path <data_path> --embed_path <embed_path> --embed_mode <bert|bow>
+python src/predictive.py --data-path <data_path> --embed_path <embed_path> --embed_mode <bert|w2v>
 ```
 
 # TODOs
@@ -48,9 +48,9 @@ python src/predictive.py --data-path <data_path> --embed_path <embed_path> --emb
 - [x] ~Best feature (review/taste)~
 - [x] ~5 Ratings (review/taste, review/aroma, review/apperence, review/palate, length of review/text)~
 - [x] ~5 Ratings + BERT embeddings~
-- [ ] 5 Ratings + BoW embeddings
+- [ ] 5 Ratings + Word2Vec embeddings
 - [x] ~BERT embeddings only~
-- [ ] BoW embeddings only
+- [ ] Word2Vec embeddings only
 
 ### Literature
 - [ ] 2 - 3 sentence per lietrature

@@ -16,7 +16,7 @@ from sklearn.metrics import mean_squared_error
 parser = argparse.ArgumentParser()
 parser.add_argument('--data-path', help='Path to dataset (must be pickle)', required=True)
 parser.add_argument('--embed-path', help='Path to embeddings (must be npy)', required=True)
-parser.add_argument('-m', '--embed-mode', help='Embedding mode (bert or bow)', choices=['bert', 'bow'] , required=True)
+parser.add_argument('-m', '--embed-mode', help='Embedding mode (bert or w2v)', choices=['bert', 'w2v'] , required=True)
 args = parser.parse_args()
 
 if args.embed_mode == 'bert':
@@ -24,8 +24,8 @@ if args.embed_mode == 'bert':
     bert_train_embeddings = load_embeddings(args.embed_path)
     bert_test_embeddings = load_embeddings(args.embed_path, False)
     print('Finished loading BERT embeddings.\n')
-elif args.embed_mode == 'bow':
-    # TODO: Add load BoW embeddings
+elif args.embed_mode == 'w2v':
+    # TODO: Add load Word2Vec embeddings
     pass
 
 
@@ -40,7 +40,7 @@ def features(i, d, load_ratings=False, load_embeddings=False, train=True):
         if args.embed_mode == 'bert':
             features.extend(bert_embed_feat(i, train))
         else:
-            pass # TODO: Add BoW embedding func
+            pass # TODO: Add Word2Vec embedding func
 
     return features
 
@@ -50,7 +50,7 @@ def bert_embed_feat(i, train):
     else:
         return bert_test_embeddings[i, :]
 
-def bow_embed_feat():
+def w2v_embed_feat():
     pass
 
 def baseline(dataTrain, dataTest):
