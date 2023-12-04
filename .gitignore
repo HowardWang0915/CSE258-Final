@@ -2,4 +2,7 @@ data/
 __pycache__/
 
 # ipynb checkpoint
-.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# numpy
+*.npy
