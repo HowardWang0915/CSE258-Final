@@ -33,8 +33,11 @@ def features(i, d, load_ratings=False, load_embeddings=False, train=True):
     features = [1]
 
     if load_ratings:
-        features.extend([d['review/taste'], d['review/aroma'], d['review/palate'], 
-                         d['review/appearance'], len(d['review/text'])])
+        if load_embeddings:
+            features.extend([d['review/taste'], d['review/aroma'], d['review/palate'], d['review/appearance']])
+        else:
+            features.extend([d['review/taste'], d['review/aroma'], d['review/palate'], 
+                                         d['review/appearance'], len(d['review/text'])])
 
     if load_embeddings:
         if args.embed_mode == 'bert':
