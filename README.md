@@ -24,9 +24,14 @@ To run Exploratory data analysis, run
 python src/EDA.py
 ```
 
-To run review/overall predictive task, run:
+To run BERT embeddings:
 ```bash
-python src/predictive.py --path <data_path>
+python src/bert_embeds.py --path <data_path>
+```
+
+To run predictive task:
+```bash
+python src/predictive.py --data-path <data_path> --embed_path <embed_path> --embed_mode <bert|bow>
 ```
 
 # TODOs
