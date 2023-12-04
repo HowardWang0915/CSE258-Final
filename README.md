@@ -36,6 +36,20 @@ python src/predictive.py --path <data_path>
 - [ ] Describe literature & research relevant to the dataset and task
 - [ ] Describe and analyze results
 
+### Data Anaylsis
+- [ ] Insight report
+
+### Regressor
+- [ ] Best feature (review/taste)
+- [ ] 4 Ratings (review/taste, review/aroma, review/apperence, review/)
+- [ ] 4 Ratings + BERT embeddings
+- [ ] 4 Ratings + BoW embeddings
+- [ ] BERT embeddings only
+- [ ] BoW embeddings only
+
+### Literature
+- [ ] 2 - 3 sentence per lietrature
+
 # Dataset
 ## EDA
 # Predictive Tasks
