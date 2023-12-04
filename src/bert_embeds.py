@@ -7,7 +7,6 @@ import numpy as np
 
 from tqdm import tqdm
 from helpers.load import loadFromPickle
-from helpers.cleanData import cleanData
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from transformers import AutoModel, AutoTokenizer
