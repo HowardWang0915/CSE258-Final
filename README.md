@@ -24,9 +24,9 @@ To run Exploratory data analysis, run
 python src/EDA.py
 ```
 
-To run review text analysis, run:
+To run review/overall predictive task, run:
 ```bash
-python src/review_text_analysis.py
+python src/predictive.py --path <data_path>
 ```
 
 # TODOs
@@ -35,6 +35,20 @@ python src/review_text_analysis.py
 - [ ] Describe what model/s you will use to solve this task
 - [ ] Describe literature & research relevant to the dataset and task
 - [ ] Describe and analyze results
+
+### Data Anaylsis
+- [ ] Insight report
+
+### Regressor
+- [ ] Best feature (review/taste)
+- [ ] 4 Ratings (review/taste, review/aroma, review/apperence, review/palate)
+- [ ] 4 Ratings + BERT embeddings
+- [ ] 4 Ratings + BoW embeddings
+- [ ] BERT embeddings only
+- [ ] BoW embeddings only
+
+### Literature
+- [ ] 2 - 3 sentence per lietrature
 
 # Dataset
 ## EDA
