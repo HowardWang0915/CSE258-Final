@@ -18,6 +18,8 @@ python src/helpers/load.py -c NUM -p PATH
 ```
 where `NUM` is the number of data you intended to load, and `PATH` is the path where the `json.gz` file is located. Put your data in your `data/` folder so that it will be commited to github.
 
+The BERT embeddings of the entire dataset is stored at this [link](https://drive.google.com/file/d/1tTeg2_YLJt0t4U7wNY01cGlgl11yuGSh/view?usp=sharing).
+
 ## Run
 To run Exploratory data analysis, run
 ```bash
