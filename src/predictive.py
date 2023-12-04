@@ -23,11 +23,14 @@ if args.embed_mode == 'bert':
     print('Start loading BERT embeddings...')
     bert_train_embeddings = load_embeddings(args.embed_path)
     bert_test_embeddings = load_embeddings(args.embed_path, False)
+    EMBEDMOD = "BERT"
     print('Finished loading BERT embeddings.\n')
 elif args.embed_mode == 'w2v':
-    # TODO: Add load Word2Vec embeddings
-    pass
-
+    print('Start loading Word2Vec embeddings...')
+    w2v_train_embeddings = load_embeddings(args.embed_path)
+    w2v_test_embeddings = load_embeddings(args.embed_path, False)
+    EMBEDMOD = "Word2Vec"
+    print('Finished loading Word2Vec embeddings.\n')
 
 def features(i, d, load_ratings=False, load_embeddings=False, train=True):
     features = [1]
@@ -43,7 +46,7 @@ def features(i, d, load_ratings=False, load_embeddings=False, train=True):
         if args.embed_mode == 'bert':
             features.extend(bert_embed_feat(i, train))
         else:
-            pass # TODO: Add Word2Vec embedding func
+            features.extend(w2v_embed_feat(i, train))
 
     return features
 
@@ -53,8 +56,11 @@ def bert_embed_feat(i, train):
     else:
         return bert_test_embeddings[i, :]
 
-def w2v_embed_feat():
-    pass
+def w2v_embed_feat(i, train):
+    if train:
+        return w2v_train_embeddings[i, :]
+    else:
+        return w2v_test_embeddings[i, :]
 
 def baseline(dataTrain, dataTest):
     print('Starting baseline experiment...')
@@ -127,7 +133,7 @@ def best_feature(dataTrain, dataTest):
     print('=========================================\n')
 
 def bert_embedding(dataTrain, dataTest):
-    print('Starting BERT embedding experiment...')
+    print('Starting {} embedding experiment...'.format(EMBEDMOD))
     print('=========================================')
 
     print('Start processing data...')
@@ -151,14 +157,14 @@ def bert_embedding(dataTrain, dataTest):
     print('Regressor fitted.\n')
 
     predictions = regressor.predict(x_test)
-    print('BERT embedding experiment finished.')
-    print('Testing results (MSE) of bert embedding model:', mean_squared_error(y_test, predictions))
+    print('{} embedding experiment finished.'.format(EMBEDMOD))
+    print('Testing results (MSE) of {} embedding model:'.format(EMBEDMOD), mean_squared_error(y_test, predictions))
     print('Ground Truth:', y_test)
     print('Predictions:', predictions)
     print('=========================================\n')
 
 def bert_with_ratings(dataTrain, dataTest):
-    print('Starting BERT with rating experiment...')
+    print('Starting {} with rating experiment...'.format(EMBEDMOD))
     print('=========================================')
 
     print('Start processing data...')
@@ -182,8 +188,8 @@ def bert_with_ratings(dataTrain, dataTest):
     print('Regressor fitted.\n')
 
     predictions = regressor.predict(x_test)
-    print('BERT with rating experiment finished.')
-    print('Testing results (MSE) of bert with rating model:', mean_squared_error(y_test, predictions))
+    print('{} with rating experiment finished.'.format(EMBEDMOD))
+    print('Testing results (MSE) of {} with rating model:'.format(EMBEDMOD), mean_squared_error(y_test, predictions))
     print('Ground Truth:', y_test)
     print('Predictions:', predictions)
     print('=========================================\n')
